@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService
@@ -14,7 +15,8 @@ export class AuthService
      */
     constructor(
         private _httpClient: HttpClient,
-        private _userService: UserService
+        private _userService: UserService,
+        private _router: Router
     )
     {
     }
@@ -80,15 +82,16 @@ export class AuthService
 
         return this._httpClient.post('http://localhost:1337/api/auth/local', newCredentials).pipe(
             switchMap((response: any) => {
+                if(response?.user?.confirmed){
+                    // Store the access token in the local storage
+                    this.accessToken = response.jwt;
 
-                // Store the access token in the local storage
-                this.accessToken = response.jwt;
+                    // Set the authenticated flag to true
+                    this._authenticated = true;
 
-                // Set the authenticated flag to true
-                this._authenticated = true;
-
-                // Store the user on the user service
-                this._userService.user = response.user;
+                    // Store the user on the user service
+                    this._userService.user = response.user;
+                }
 
                 // Return a new observable with the response
                 return of(response);
@@ -158,7 +161,18 @@ export class AuthService
      */
     signUp(user: { name: string; email: string; password: string; company: string }): Observable<any>
     {
-        return this._httpClient.post('api/auth/sign-up', user);
+        const newUser = {
+         username: user.email,
+         email: user.email,
+         password: user.password   
+        }
+        const auth_token = 'ba2504d0a29c99a8ee584a8dfdcaee74b4db19d2c39cfa0fb0e68ae58f7601323378b0a20a77f5b4d08df8a4b79717f8fa4138b61680ecf4d36f9173be7d44d51d8ac82d691ff4d2716cb64733bf6f21117bc3e195af371e28a9aaadf53aedaea88f4f317769c80fe8706818b6d4ee48350bfe0c50883c0e61ad492ef3577957';
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth_token}`
+          });
+        
+        return this._httpClient.post('http://localhost:1337/api/users', newUser, { headers });
     }
 
     /**

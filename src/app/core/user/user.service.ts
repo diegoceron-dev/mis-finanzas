@@ -46,11 +46,15 @@ export class UserService
      */
     get(): Observable<User>
     {
-        return this._httpClient.get<User>('api/common/user').pipe(
-            tap((user) => {
-                this._user.next(user);
-            })
-        );
+        try {
+            return this._httpClient.get<User>('http://localhost:1337/api/users/me?fields').pipe(
+                tap((user) => {
+                    this._user.next(user);
+                })
+            );
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     /**

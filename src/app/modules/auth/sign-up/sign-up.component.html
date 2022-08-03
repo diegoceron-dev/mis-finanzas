@@ -2,7 +2,7 @@
     <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
         <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
             <!-- Logo -->
-            <div class="w-24">
+            <div class="w-32">
                 <img src="assets/images/logo/logo.png">
             </div>
 
@@ -34,7 +34,7 @@
                 #signUpNgForm="ngForm">
 
                 <!-- Name field -->
-                <mat-form-field class="w-full">
+                <!-- <mat-form-field class="w-full">
                     <mat-label>Full name</mat-label>
                     <input
                         id="name"
@@ -43,7 +43,7 @@
                     <mat-error *ngIf="signUpForm.get('name').hasError('required')">
                         Full name is required
                     </mat-error>
-                </mat-form-field>
+                </mat-form-field> -->
 
                 <!-- Email field -->
                 <mat-form-field class="w-full">
@@ -89,13 +89,13 @@
                 </mat-form-field>
 
                 <!-- Company field -->
-                <mat-form-field class="w-full">
+                <!-- <mat-form-field class="w-full">
                     <mat-label>Company</mat-label>
                     <input
                         id="company-confirm"
                         matInput
                         [formControlName]="'company'">
-                </mat-form-field>
+                </mat-form-field> -->
 
                 <!-- ToS and PP -->
                 <div class="inline-flex items-end w-full mt-1.5">
@@ -120,7 +120,7 @@
                     class="fuse-mat-button-large w-full mt-6"
                     mat-flat-button
                     [color]="'primary'"
-                    [disabled]="signUpForm.disabled"
+                    [disabled]="signUpForm.disabled || signUpForm.invalid"
                     (click)="signUp()">
                     <span *ngIf="!signUpForm.disabled">
                         Create your free account
@@ -134,7 +134,7 @@
             </form>
         </div>
     </div>
-    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-28 overflow-hidden bg-teal-800 dark:border-l">
         <!-- Background - @formatter:off -->
         <!-- Rings -->
         <svg class="absolute inset-0 pointer-events-none"
