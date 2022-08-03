@@ -162,7 +162,7 @@ export class AuthService
     signUp(user: { name: string; email: string; password: string; company: string }): Observable<any>
     {
         const newUser = {
-         username: user.email,
+         username: this.removeForbiddenCharacters(user.email),
          email: user.email,
          password: user.password   
         }
@@ -173,6 +173,15 @@ export class AuthService
           });
         
         return this._httpClient.post('http://localhost:1337/api/users', newUser, { headers });
+    }
+
+    removeForbiddenCharacters(input: string) {
+        const forbiddenChars = ['/', '?', '&','=','.','"','@']
+        
+        for (let char of forbiddenChars){
+            input = input.split(char).join('');
+        }
+        return input
     }
 
     /**
