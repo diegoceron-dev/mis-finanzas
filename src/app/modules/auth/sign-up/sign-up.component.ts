@@ -3,6 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angul
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
+import { AccountService } from 'app/core/account/account.service';
 import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
@@ -27,6 +28,7 @@ export class AuthSignUpComponent implements OnInit
      */
     constructor(
         private _authService: AuthService,
+        private _accountService: AccountService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router
     )
@@ -76,9 +78,15 @@ export class AuthSignUpComponent implements OnInit
         this._authService.signUp(this.signUpForm.value)
             .subscribe(
                 (response) => {
+                    console.log(response.id);
+                    this._accountService.createAccount(response.id).subscribe(
+                        (accountResponse) => {     
+                            console.log(accountResponse);
 
-                    // Navigate to the confirmation required page
-                    this._router.navigateByUrl('/confirmation-required');
+                            // Navigate to the confirmation required page
+                            this._router.navigateByUrl('/confirmation-required');
+                        }
+                    );
                 },
                 (response) => {
 
