@@ -16,6 +16,10 @@ export class AccountComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.getAccount();
+  }
+
+  getAccount() {
     this._userService.user$
     .subscribe((user: User) => {
       this._accountService.getAccountInfo(Number(user.id)).subscribe(
@@ -26,8 +30,5 @@ export class AccountComponent implements OnInit {
         }
       );
     });
-
-
   }
-
 }
