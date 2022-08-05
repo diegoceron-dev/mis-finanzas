@@ -1,14 +1,111 @@
-<div class="flex flex-col flex-auto min-w-0">
-    <!-- Main -->
-    <div class="flex-auto p-6 sm:p-10">
-        <!-- CONTENT GOES HERE -->
-        <div>
-            <div class="text-3xl font-semibold tracking-tight leading-8">
-                Account
-            </div>
-            <div class="font-medium tracking-tight text-secondary">
-                Record information about your income and expenses. Plan your future and learn from the past.
-            </div>
+<div class="flex flex-col flex-auto w-full">
+  <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+    <div class="flex items-center justify-between w-full">
+      <div>
+        <div class="text-3xl font-semibold tracking-tight leading-8">
+          Account
         </div>
+        <div class="font-medium tracking-tight text-secondary">
+          Record information about your income and expenses. Plan your future
+                                                                                and learn from the past.
+        </div>
+      </div>
     </div>
-</div>
+
+    <!-- Incomes -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-8">
+      <div class="sm:col-span-2 lg:col-span-3 flex flex-col flex-auto shadow rounded-2xl overflow-hidden">
+        <fuse-card class="grid grid-cols-1 lg:grid-cols-2 gap-y-4">
+          <div class="pl-6">
+            <div class="flex items-center mt-6">
+              <div class="font-medium text-secondary">
+                INCOME
+              </div>
+              <div class="flex-auto ml-2 border-b-2"></div>
+            </div>
+            <form [formGroup]="incomeForm">
+              <div class="flex flex-col flex-auto p-8 pb-6 pl-2 rounded overflow-hidden">
+                <mat-form-field class="fuse-mat-dense flex-auto">
+                  <input matInput="matInput" [placeholder]="'Title'" formControlName="title"/>
+                </mat-form-field>
+
+                <mat-form-field class="fuse-mat-dense flex-auto">
+                  <input class="text-left" matInput="matInput" [placeholder]="'Amount'" formControlName="amount">
+                    <span matPrefix="matPrefix">$</span>
+                    <span matSuffix="matSuffix">.00</span>
+                  </mat-form-field>
+
+                  <mat-checkbox class="mb-2 pl-2" [checked]="false" [color]="'primary'" formControlName="gotIt">
+                    Got it?
+                  </mat-checkbox>
+                </div>
+            </form>
+            </div>
+            <!-- Price -->
+            <div class="flex flex-col items-center p-8 lg:px-10 lg:py-12 lg:min-w-80 bg-accent-200 dark:bg-black dark:bg-opacity-10">
+              <div class="flex items-center whitespace-nowrap">
+                <div class="text-8xl font-extrabold tracking-tight">
+                    ${{this.incomeForm.value.amount || 0}}
+                </div>
+                <div class="ml-2 text-2xl font-semibold text-secondary">
+                  MXN
+                </div>
+              </div>
+              <div class="font-medium text-center text-secondary"></div>
+              <button class="w-full mt-8 lg:mt-auto" mat-flat-button="mat-flat-button" [color]="'primary'">
+                Save Income
+              </button>
+            </div>
+          </fuse-card>
+        </div>
+      </div>
+
+      <!-- Expense -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-8">
+        <div class="sm:col-span-2 lg:col-span-3 flex flex-col flex-auto shadow rounded-2xl overflow-hidden">
+          <fuse-card class="grid grid-cols-1 lg:grid-cols-2 gap-y-4">
+            <div class="pl-6">
+              <div class="flex items-center mt-6">
+                <div class="font-medium text-secondary">
+                  EXPENSE
+                </div>
+                <div class="flex-auto ml-2 border-b-2"></div>
+              </div>
+              <form [formGroup]="expenseForm">
+                <div class="flex flex-col flex-auto p-8 pb-6 pl-2 rounded overflow-hidden">
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                    <input matInput="matInput" [placeholder]="'Title'" formControlName="title"/>
+                  </mat-form-field>
+  
+                  <mat-form-field class="fuse-mat-dense flex-auto">
+                    <input class="text-left" matInput="matInput" [placeholder]="'Amount'" formControlName="amount">
+                      <span matPrefix="matPrefix">$</span>
+                      <span matSuffix="matSuffix">.00</span>
+                    </mat-form-field>
+  
+                    <mat-checkbox class="mb-2 pl-2" [checked]="false" [color]="'primary'" formControlName="paidIt">
+                      Got it?
+                    </mat-checkbox>
+                  </div>
+              </form>
+              </div>
+              <!-- Price -->
+              <div class="flex flex-col items-center p-8 lg:px-10 lg:py-12 lg:min-w-80 bg-accent-200 dark:bg-black dark:bg-opacity-10">
+                <div class="flex items-center whitespace-nowrap">
+                  <div class="text-8xl font-extrabold tracking-tight">
+                    ${{this.expenseForm.value.amount || 0}}
+                  </div>
+                  <div class="ml-2 text-2xl font-semibold text-secondary">
+                    MXN
+                  </div>
+                </div>
+                <div class="font-medium text-center text-secondary"></div>
+                <button class="w-full mt-8 lg:mt-auto" mat-flat-button="mat-flat-button" [color]="'primary'">
+                  Save Expense
+                </button>
+              </div>
+            </fuse-card>
+          </div>
+        </div>
+      </div>
+    </div>

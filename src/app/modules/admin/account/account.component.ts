@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AccountService } from 'app/core/account/account.service';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
@@ -9,6 +10,23 @@ import { User } from 'app/core/user/user.types';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
+  formFieldHelpers: string[] = [''];
+  
+  public amountIncome: number = 128;
+
+  public amountExpense: number = 126;
+
+  incomeForm = new FormGroup({
+    title: new FormControl(''),
+    amount: new FormControl(null),
+    gotIt: new FormControl(false)
+  });
+
+  expenseForm = new FormGroup({
+    title: new FormControl(''),
+    amount: new FormControl(null),
+    paidIt: new FormControl(false)
+  });  
 
   constructor(
     private _accountService: AccountService,
