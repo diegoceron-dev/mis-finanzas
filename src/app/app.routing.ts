@@ -12,14 +12,14 @@ export const appRoutes: Route[] = [
     {path: 'home', pathMatch : 'full', redirectTo: 'home'},
 
     // Redirect empty path to '/home'
-    {path: '', pathMatch : 'full', redirectTo: 'finance'},
+    {path: '', pathMatch : 'full', redirectTo: 'account'},
 
     // Redirect signed in user to the '/example'
     //
     // After the user signs in, the sign in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'finance'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'account'},
 
     // Auth routes for guests
     {
