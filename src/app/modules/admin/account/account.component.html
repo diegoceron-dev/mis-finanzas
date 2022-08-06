@@ -86,9 +86,20 @@
                     Scheduled payment on a recurring basis 
                   </div>
                 </div>
+                
                 <div class="flex items-center whitespace-nowrap" *ngIf="this.incomeForm.value.isRecurrent && this.incomeForm.value.every">
                   <div class="ml-2 text-1xl text-secondary">
                     Every {{ this.findEveryName }}
+                  </div>
+                </div>
+
+                <div class="flex items-center whitespace-nowrap mt-4" *ngIf="this.incomeForm.value.gotIt && this.incomeForm.valid">
+                  <mat-icon svgIcon="heroicons_outline:badge-check" [color]="iHaveIncomeColor"></mat-icon>
+                </div>
+
+                <div class="flex items-center whitespace-nowrap mb-4" [ngClass]="iHaveIncomeTextColor">
+                  <div class="ml-2 text-2xl" >
+                    {{ this.iHaveIncomeMessage }}
                   </div>
                 </div>
                 

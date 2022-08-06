@@ -62,4 +62,19 @@ export class AccountComponent implements OnInit {
   get findEveryName(){
     return this.everyList.find((every) => every.id === this.incomeForm.value.every).name
   }
+
+  get iHaveIncomeTextColor() {
+    return this.incomeForm.value.gotIt ? 'text-primary-500' : 'text-warn-500';
+  }
+
+  get iHaveIncomeColor() {
+    return this.incomeForm.value.gotIt ? 'primary' : 'warn';
+  }
+
+
+  get iHaveIncomeMessage() {
+    if(this.incomeForm.invalid) return '';
+
+    return this.incomeForm.value.gotIt && this.incomeForm.valid ? 'I already have this income' : 'I do not have the income yet';
+  }
 }
