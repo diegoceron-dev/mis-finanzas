@@ -19,13 +19,15 @@ export class AccountComponent implements OnInit {
   incomeForm = new FormGroup({
     title: new FormControl(''),
     amount: new FormControl(null),
-    gotIt: new FormControl(false)
+    gotIt: new FormControl(false),
+    date: new FormControl()
   });
 
   expenseForm = new FormGroup({
     title: new FormControl(''),
     amount: new FormControl(null),
-    paidIt: new FormControl(false)
+    paidIt: new FormControl(false),
+    date: new FormControl()
   });  
 
   constructor(

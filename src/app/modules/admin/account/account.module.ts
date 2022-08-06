@@ -15,6 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { SharedModule } from 'app/shared/shared.module';
 
 const accountRoutes: Route[] = [
@@ -43,6 +45,8 @@ const accountRoutes: Route[] = [
         MatSelectModule,
         FuseCardModule,
         SharedModule,
+        MatDatepickerModule,
+        MatMomentDateModule
     ],
 })
 export class AccountModule {}
