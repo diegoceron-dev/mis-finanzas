@@ -59,6 +59,12 @@ export class AccountComponent implements OnInit {
     });
   }
 
+  changeIsCurrentIncome(event: Event) {
+    if(!this.incomeForm.value.isRecurrent){
+      this.incomeForm.patchValue({ every: '' });
+    }
+  }
+
   get findEveryName(){
     return this.everyList.find((every) => every.id === this.incomeForm.value.every).name
   }
