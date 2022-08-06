@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from 'app/core/account/account.service';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
@@ -11,24 +11,31 @@ import { User } from 'app/core/user/user.types';
 })
 export class AccountComponent implements OnInit {
   formFieldHelpers: string[] = [''];
-  
-  public amountIncome: number = 128;
-
-  public amountExpense: number = 126;
 
   incomeForm = new FormGroup({
-    title: new FormControl(''),
-    amount: new FormControl(null),
-    gotIt: new FormControl(false),
-    date: new FormControl()
+    title: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(18)]),
+    amount: new FormControl(null, [Validators.required]),
+    isRecurrent: new FormControl(false, [Validators.required]),
+    every: new FormControl('', []),
+    date: new FormControl(null, [Validators.required]),
+    gotIt: new FormControl(false, []),
   });
 
   expenseForm = new FormGroup({
-    title: new FormControl(''),
-    amount: new FormControl(null),
-    paidIt: new FormControl(false),
-    date: new FormControl()
-  });  
+    title: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(18)]),
+    amount: new FormControl(null, [Validators.required]),
+    isRecurrent: new FormControl(false, [Validators.required]),
+    every: new FormControl('', [Validators.required]),
+    date: new FormControl(null, [Validators.required]),
+    paidIt: new FormControl(false, [Validators.required]),
+  });
+
+  everyList = [
+    {id: '1', name: 'Day of selected'},
+    {id: '2', name: 'Week'},
+    {id: '3', name: 'Weekly'},
+    {id: '4', name: 'Month'},
+  ]
 
   constructor(
     private _accountService: AccountService,
@@ -50,5 +57,9 @@ export class AccountComponent implements OnInit {
         }
       );
     });
+  }
+
+  get findEveryName(){
+    return this.everyList.find((every) => every.id === this.incomeForm.value.every).name
   }
 }
