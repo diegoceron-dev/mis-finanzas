@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AccountService } from 'app/core/account/account.service';
+import { LocalstorageService } from 'app/core/persistence/localstorage.service';
+import moment, { months } from 'moment';
 
 @Component({
   selector: 'form-income',
@@ -25,7 +28,8 @@ export class FormIncomeComponent implements OnInit {
     {id: '4', name: 'Month'},
   ]
 
-  constructor() { }
+  constructor(private _accountService: AccountService,
+    private _localStorage: LocalstorageService,) { }
 
   ngOnInit(): void {
   }
@@ -38,7 +42,41 @@ export class FormIncomeComponent implements OnInit {
 
   submitForm() {
     console.log('Save Income');
-    console.table(this.incomeForm);
+    if(this.incomeForm.valid) {
+      this._accountService.saveIncome(
+        {
+          title: this.incomeForm.value.title,
+          amount: this.incomeForm.value.amount,
+          gotIt: this.incomeForm.value.gotIt,
+          date: this.formatDate(this.incomeForm.value.date?._i),
+          account: Number(this._localStorage.account)
+        }
+      ).subscribe();
+    }
+
+    this.incomeForm.setValue(
+      {
+        title: '',
+        amount: null,
+        isRecurrent: false,
+        every: '',
+        date: null,
+        gotIt: false
+      }
+    )
+
+    this.incomeForm.clearAsyncValidators();
+    this.incomeForm.clearValidators();
+    this.incomeForm.markAsPending();
+    this.incomeForm.untouched;
+  }
+
+  formatDate(date: {date: number, month: number, year: number}) { 
+    const m = date.month + 1;
+    const month = Number(m) <= 9 ? '0' + m : m;
+    const d = date.date + 1;
+    const day = Number(d) <= 9 ? '0' + d : d;
+    return date.year + '-' + month + '-' + day;
   }
 
   get findEveryName(){
@@ -52,7 +90,6 @@ export class FormIncomeComponent implements OnInit {
   get iHaveIncomeColor() {
     return this.incomeForm.value.gotIt ? 'primary' : 'warn';
   }
-
 
   get iHaveIncomeMessage() {
     if(this.incomeForm.invalid) return '';

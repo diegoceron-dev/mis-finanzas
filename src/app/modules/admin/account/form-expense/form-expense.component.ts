@@ -38,7 +38,6 @@ export class FormExpenseComponent implements OnInit {
 
   submitForm() {
     console.log('Save Expense');
-    console.table(this.expenseForm);
   }
 
   get findEveryName(){

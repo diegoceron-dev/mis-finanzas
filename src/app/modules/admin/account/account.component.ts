@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AccountService} from 'app/core/account/account.service';
+import { LocalstorageService } from 'app/core/persistence/localstorage.service';
 import {UserService} from 'app/core/user/user.service';
 import {User} from 'app/core/user/user.types';
 
@@ -58,7 +59,7 @@ export class AccountComponent implements OnInit {
     },
   ]
 
-  constructor(private _accountService : AccountService, private _userService : UserService,) {}
+  constructor(private _accountService : AccountService, private _userService : UserService, private _localStorage: LocalstorageService) {}
 
   ngOnInit(): void {
     this.getAccount();
@@ -73,11 +74,7 @@ export class AccountComponent implements OnInit {
         if (response.propertyIsEnumerable('data')) {
           const account = response.data.find((account) => account.attributes.user.data);
 
-          if (account){
-            console.log(account);
-            localStorage.setItem('account', String(account.id));
-            localStorage.setItem('accountId', String(account.attributes.accountId));
-          } 
+          if (account) this._localStorage.account = String(account.id);
         }
       });
     });
