@@ -1,0 +1,106 @@
+<!-- Incomes -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mt-8">
+  <div class="sm:col-span-2 lg:col-span-3 flex flex-col flex-auto shadow rounded-2xl overflow-hidden">
+    <fuse-card class="grid grid-cols-1 lg:grid-cols-2 gap-y-4">
+      <div class="pl-6">
+        <div class="flex items-center mt-6">
+          <mat-icon svgIcon="feather:log-in" class="ml-2 mr-2"></mat-icon>
+          <div class="font-medium text-secondary">
+            INCOME
+          </div>
+          <div class="flex-auto ml-2 border-b-2"></div>
+        </div>
+        <form [formGroup]="incomeForm" autocomplete="off" (ngSubmit)="submitForm()">
+          <div class="flex flex-col flex-auto p-8 pb-6 pl-2 rounded overflow-hidden">
+            <mat-form-field class="fuse-mat-emphasized-affix fuse-mat-dense">
+              <input matInput="matInput" [placeholder]="'Title'" formControlName="title" minlength="1" maxlength="18" />
+              <span matSuffix="matSuffix">
+                <mat-icon svgIcon="heroicons_outline:annotation"></mat-icon>
+              </span>
+            </mat-form-field>
+
+            <mat-form-field class="fuse-mat-emphasized-affix fuse-mat-dense">
+              <input class="text-left" matInput="matInput" [placeholder]="'Amount'" formControlName="amount">
+              <span matSuffix="matSuffix">
+                <mat-icon svgIcon="heroicons_outline:currency-dollar"></mat-icon>
+              </span>
+            </mat-form-field>
+
+            <mat-form-field [ngClass]="formFieldHelpers" class="fuse-mat-emphasized-affix fuse-mat-dense">
+              <input matInput [matDatepicker]="date" [placeholder]="'Date'" formControlName="date" (click)="date.open()" readonly style="cursor: pointer">
+              <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+              <mat-datepicker #date></mat-datepicker>
+            </mat-form-field>
+
+            <mat-checkbox class="mb-4 pl-2" [color]="'primary'" formControlName="isRecurrent"
+              (change)="changeIsCurrentIncome($event)">
+              Is recurrent?
+            </mat-checkbox>
+
+            <mat-form-field *ngIf="this.incomeForm.value.isRecurrent" [ngClass]="formFieldHelpers"
+              class="fuse-mat-emphasized-affix fuse-mat-dense">
+              <mat-select [placeholder]="'Every time'" formControlName="every">
+                <mat-option *ngFor="let every of everyList" [value]="every.id">{{ every.name }}</mat-option>
+              </mat-select>
+              <mat-icon class="icon-size-5" matSuffix [svgIcon]="'heroicons_solid:duplicate'"></mat-icon>
+            </mat-form-field>
+
+            <mat-checkbox class="mb-4 pl-2" [color]="'primary'" formControlName="gotIt">
+              Got it?
+            </mat-checkbox>
+          </div>
+        </form>
+      </div>
+
+      <!-- INFO -->
+      <div
+        class="flex flex-col items-center p-8 lg:px-10 lg:py-12 lg:min-w-80 bg-accent-200 dark:bg-black dark:bg-opacity-10">
+        <div class="flex items-center whitespace-nowrap">
+          <div class="ml-2 text-4xl text-primary font-semibold ">
+            {{ this.incomeForm.value.title.toUpperCase() || 'About income...' }}
+          </div>
+        </div>
+
+        <div class="flex items-center whitespace-nowrap mt-8">
+          <div class="text-8xl font-extrabold tracking-tight">
+            ${{this.incomeForm.value.amount || 0}}
+          </div>
+          <div class="ml-2 text-2xl font-semibold text-secondary">
+            MXN
+          </div>
+        </div>
+
+        <div class="flex items-center whitespace-nowrap"
+          *ngIf="this.incomeForm.value.isRecurrent && this.incomeForm.value.every">
+          <div class="ml-2 text-1xl text-secondary">
+            Scheduled payment on a recurring basis
+          </div>
+        </div>
+
+        <div class="flex items-center whitespace-nowrap"
+          *ngIf="this.incomeForm.value.isRecurrent && this.incomeForm.value.every">
+          <div class="ml-2 text-1xl text-secondary">
+            Every {{ this.findEveryName }}
+          </div>
+        </div>
+
+        <div class="flex items-center whitespace-nowrap mt-4"
+          *ngIf="this.incomeForm.value.gotIt && this.incomeForm.valid">
+          <mat-icon svgIcon="heroicons_outline:badge-check" [color]="iHaveIncomeColor"></mat-icon>
+        </div>
+
+        <div class="flex items-center whitespace-nowrap mb-4" [ngClass]="iHaveIncomeTextColor">
+          <div class="ml-2 text-2xl">
+            {{ this.iHaveIncomeMessage }}
+          </div>
+        </div>
+
+        <div class="font-medium text-center text-secondary"></div>
+        <button (click)="submitForm()" class="w-full mt-8 lg:mt-auto" mat-flat-button="mat-flat-button" [color]="'primary'"
+          [disabled]="this.incomeForm.invalid">
+          Save Income
+        </button>
+      </div>
+    </fuse-card>
+  </div>
+</div>

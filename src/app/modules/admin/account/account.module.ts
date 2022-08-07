@@ -18,6 +18,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { SharedModule } from 'app/shared/shared.module';
+import { FormIncomeComponent } from './form-income/form-income.component';
+import { FormExpenseComponent } from './form-expense/form-expense.component';
 
 const accountRoutes: Route[] = [
     {
@@ -27,7 +29,7 @@ const accountRoutes: Route[] = [
 ];
 
 @NgModule({
-    declarations: [AccountComponent],
+    declarations: [AccountComponent, FormIncomeComponent, FormExpenseComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(accountRoutes),

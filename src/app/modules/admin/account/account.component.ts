@@ -1,16 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AccountService } from 'app/core/account/account.service';
-import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.types';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AccountService} from 'app/core/account/account.service';
+import {UserService} from 'app/core/user/user.service';
+import {User} from 'app/core/user/user.types';
 
-@Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss']
-})
+export interface UserInterface {
+  data?: any;
+}
+export interface AttributesInterface {
+  accountId: string;
+  typeAccount: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date;
+  user: UserInterface;
+}
+export interface AccountInterface {
+  id: number;
+  attributes: AttributesInterface;
+}
+
+@Component({selector: 'app-account', templateUrl: './account.component.html', styleUrls: ['./account.component.scss']})
 export class AccountComponent implements OnInit {
-  formFieldHelpers: string[] = [''];
+  formFieldHelpers : string[] = [''];
 
   incomeForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(18)]),
@@ -18,7 +30,7 @@ export class AccountComponent implements OnInit {
     isRecurrent: new FormControl(false, [Validators.required]),
     every: new FormControl('', []),
     date: new FormControl(null, [Validators.required]),
-    gotIt: new FormControl(false, []),
+    gotIt: new FormControl(false, [])
   });
 
   expenseForm = new FormGroup({
@@ -27,60 +39,47 @@ export class AccountComponent implements OnInit {
     isRecurrent: new FormControl(false, [Validators.required]),
     every: new FormControl('', [Validators.required]),
     date: new FormControl(null, [Validators.required]),
-    paidIt: new FormControl(false, [Validators.required]),
+    paidIt: new FormControl(false, [Validators.required])
   });
 
   everyList = [
-    {id: '1', name: 'Day of selected'},
-    {id: '2', name: 'Week'},
-    {id: '3', name: 'Weekly'},
-    {id: '4', name: 'Month'},
+    {
+      id: '1',
+      name: 'Day of selected'
+    }, {
+      id: '2',
+      name: 'Week'
+    }, {
+      id: '3',
+      name: 'Weekly'
+    }, {
+      id: '4',
+      name: 'Month'
+    },
   ]
 
-  constructor(
-    private _accountService: AccountService,
-    private _userService: UserService,
-    ) { }
+  constructor(private _accountService : AccountService, private _userService : UserService,) {}
 
   ngOnInit(): void {
     this.getAccount();
   }
 
   getAccount() {
-    this._userService.user$
-    .subscribe((user: User) => {
-      this._accountService.getAccountInfo(Number(user.id)).subscribe(
-        (response) => {
-          if(response.propertyIsEnumerable('data')){
-            console.log(response);
-          }
+    this._userService.user$.subscribe((user : User) => {
+      this._accountService.getAccountInfo(Number(user.id)).subscribe((response : {
+        data: AccountInterface[];
+        propertyIsEnumerable: (arg0 : string) => any;
+      }) => {
+        if (response.propertyIsEnumerable('data')) {
+          const account = response.data.find((account) => account.attributes.user.data);
+
+          if (account){
+            console.log(account);
+            localStorage.setItem('account', String(account.id));
+            localStorage.setItem('accountId', String(account.attributes.accountId));
+          } 
         }
-      );
+      });
     });
-  }
-
-  changeIsCurrentIncome(event: Event) {
-    if(!this.incomeForm.value.isRecurrent){
-      this.incomeForm.patchValue({ every: '' });
-    }
-  }
-
-  get findEveryName(){
-    return this.everyList.find((every) => every.id === this.incomeForm.value.every).name
-  }
-
-  get iHaveIncomeTextColor() {
-    return this.incomeForm.value.gotIt ? 'text-primary-500' : 'text-warn-500';
-  }
-
-  get iHaveIncomeColor() {
-    return this.incomeForm.value.gotIt ? 'primary' : 'warn';
-  }
-
-
-  get iHaveIncomeMessage() {
-    if(this.incomeForm.invalid) return '';
-
-    return this.incomeForm.value.gotIt && this.incomeForm.valid ? 'I already have this income' : 'I do not have the income yet';
   }
 }
