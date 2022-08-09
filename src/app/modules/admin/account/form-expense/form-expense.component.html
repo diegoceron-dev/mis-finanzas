@@ -20,13 +20,16 @@
             </mat-form-field>
 
             <mat-form-field class="fuse-mat-emphasized-affix fuse-mat-dense">
-              <input class="text-left" matInput="matInput" [placeholder]="'Amount'" formControlName="amount">
+              <input class="text-left" matInput="matInput" [placeholder]="'Amount'" formControlName="amount" 
+              type="number"
+              min="0"
+              oninput="value == '' ? value = 0 : value < 0 ? value = value * -1 : false">
               <span matSuffix="matSuffix">
                 <mat-icon svgIcon="heroicons_outline:currency-dollar"></mat-icon>
               </span>
             </mat-form-field>
 
-            <mat-form-field [ngClass]="formFieldHelpers" class="fuse-mat-emphasized-affix fuse-mat-dense">
+            <mat-form-field  class="fuse-mat-emphasized-affix fuse-mat-dense">
               <input matInput [matDatepicker]="date" [placeholder]="'Date'" formControlName="date" (click)="date.open()" readonly style="cursor: pointer">
               <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
               <mat-datepicker #date></mat-datepicker>
@@ -37,7 +40,7 @@
               Is recurrent?
             </mat-checkbox>
 
-            <mat-form-field *ngIf="this.expenseForm.value.isRecurrent" [ngClass]="formFieldHelpers"
+            <mat-form-field *ngIf="this.expenseForm.value.isRecurrent" 
               class="fuse-mat-emphasized-affix fuse-mat-dense">
               <mat-select [placeholder]="'Every time'" formControlName="every">
                 <mat-option *ngFor="let every of everyList" [value]="every.id">{{ every.name }}</mat-option>
@@ -100,6 +103,18 @@
           [disabled]="this.expenseForm.invalid">
           Save Expense
         </button>
+        <div class="pt-4" *ngIf="alert.title">
+          <!-- Success -->
+          <fuse-alert
+          [appearance]="'fill'"
+          [dismissible]="true"
+          [dismissed]="false"
+          [name]="'alertExpense'"
+          [type]="this.alert.type">
+            <span fuseAlertTitle>{{this.alert.title}}</span>
+            {{this.alert.message}}
+          </fuse-alert>
+        </div>
       </div>
     </fuse-card>
   </div>

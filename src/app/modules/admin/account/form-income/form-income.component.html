@@ -41,7 +41,7 @@
               Is recurrent?
             </mat-checkbox>
 
-            <mat-form-field *ngIf="this.incomeForm.value.isRecurrent" [ngClass]="formFieldHelpers"
+            <mat-form-field *ngIf="incomeForm.value.isRecurrent" [ngClass]="formFieldHelpers"
               class="fuse-mat-emphasized-affix fuse-mat-dense">
               <mat-select [placeholder]="'Every time'" formControlName="every">
                 <mat-option *ngFor="let every of everyList" [value]="every.id">{{ every.name }}</mat-option>
@@ -61,13 +61,13 @@
         class="flex flex-col items-center p-8 lg:px-10 lg:py-12 lg:min-w-80 bg-accent-200 dark:bg-black dark:bg-opacity-10">
         <div class="flex items-center whitespace-nowrap">
           <div class="ml-2 text-4xl text-primary font-semibold ">
-            {{ this.incomeForm.value.title.toUpperCase() || 'About income...' }}
+            {{ incomeForm.value.title.toUpperCase() || 'About income...' }}
           </div>
         </div>
 
         <div class="flex items-center whitespace-nowrap mt-8">
           <div class="text-8xl font-extrabold tracking-tight">
-            ${{this.incomeForm.value.amount || 0}}
+            ${{incomeForm.value.amount || 0}}
           </div>
           <div class="ml-2 text-2xl font-semibold text-secondary">
             MXN
@@ -75,45 +75,45 @@
         </div>
 
         <div class="flex items-center whitespace-nowrap"
-          *ngIf="this.incomeForm.value.isRecurrent && this.incomeForm.value.every">
+          *ngIf="incomeForm.value.isRecurrent && incomeForm.value.every">
           <div class="ml-2 text-1xl text-secondary">
             Scheduled payment on a recurring basis
           </div>
         </div>
 
         <div class="flex items-center whitespace-nowrap"
-          *ngIf="this.incomeForm.value.isRecurrent && this.incomeForm.value.every">
+          *ngIf="incomeForm.value.isRecurrent && incomeForm.value.every">
           <div class="ml-2 text-1xl text-secondary">
-            Every {{ this.findEveryName }}
+            Every {{ findEveryName }}
           </div>
         </div>
 
         <div class="flex items-center whitespace-nowrap mt-4"
-          *ngIf="this.incomeForm.value.gotIt && this.incomeForm.valid">
+          *ngIf="incomeForm.value.gotIt && incomeForm.valid">
           <mat-icon svgIcon="heroicons_outline:badge-check" [color]="iHaveIncomeColor"></mat-icon>
         </div>
 
         <div class="flex items-center whitespace-nowrap mb-4" [ngClass]="iHaveIncomeTextColor">
           <div class="ml-2 text-2xl">
-            {{ this.iHaveIncomeMessage }}
+            {{ iHaveIncomeMessage }}
           </div>
         </div>
 
         <button (click)="submitForm()" class="w-full mt-8 lg:mt-auto" mat-flat-button="mat-flat-button"
-          [color]="'primary'" [disabled]="this.incomeForm.invalid">
+          [color]="'primary'" [disabled]="incomeForm.invalid">
           Save Income
         </button>
 
-        <div class="pt-4">
+        <div class="pt-4" *ngIf="alert.title">
           <!-- Success -->
           <fuse-alert
           [appearance]="'fill'"
           [dismissible]="true"
           [dismissed]="false"
           [name]="'alertIncome'"
-          [type]="this.alert.type">
-            <span fuseAlertTitle>{{this.alert.title}}</span>
-            {{this.alert.message}}
+          [type]="alert.type">
+            <span fuseAlertTitle>{{alert.title}}</span>
+            {{alert.message}}
           </fuse-alert>
         </div>
       </div>

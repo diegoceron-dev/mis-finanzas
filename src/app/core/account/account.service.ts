@@ -7,7 +7,15 @@ export interface IncomeInterface {
   title: string;
   amount: number;
   gotIt: boolean;
-  date: string;
+  date: any;
+  account: number;
+}
+
+export interface ExpenseInterface {
+  title: string;
+  amount: number;
+  paidIt: boolean;
+  date: any;
   account: number;
 }
 
@@ -68,11 +76,39 @@ export class AccountService {
         'Authorization': `Bearer ${auth_token}`
       });
 
+      income.date = this.formatDate(income.date);
+
       const data = {
         data: income
       }
       
       return this._httpClient.post('http://localhost:1337/api/incomes', data, { headers });
+    }
+
+    saveExpense(expense: ExpenseInterface) {
+      const auth_token = this._localStorage.accessToken;
+        
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${auth_token}`
+      });
+
+      expense.date = this.formatDate(expense.date);
+
+      const data = {
+        data: expense
+      }
+      
+      return this._httpClient.post('http://localhost:1337/api/expenses', data, { headers });
+    }
+
+
+    formatDate(date: { date: number; month: number; year: number }) {
+      const m = date.month + 1;
+      const month = Number(m) <= 9 ? '0' + m : m;
+      const d = date.date + 1;
+      const day = Number(d) <= 9 ? '0' + d : d;
+      return date.year + '-' + month + '-' + day;
     }
 
 }

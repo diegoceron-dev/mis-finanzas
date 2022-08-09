@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FuseAlertService } from '@fuse/components/alert';
 import {AccountService} from 'app/core/account/account.service';
 import { LocalstorageService } from 'app/core/persistence/localstorage.service';
 import {UserService} from 'app/core/user/user.service';
@@ -59,7 +60,10 @@ export class AccountComponent implements OnInit {
     },
   ]
 
-  constructor(private _accountService : AccountService, private _userService : UserService, private _localStorage: LocalstorageService) {}
+  constructor(private _fuseAlertService: FuseAlertService,private _accountService : AccountService, private _userService : UserService, private _localStorage: LocalstorageService) {
+    this._fuseAlertService.dismiss('alertExpense');
+    this._fuseAlertService.dismiss('alertIncome');
+  }
 
   ngOnInit(): void {
     this.getAccount();

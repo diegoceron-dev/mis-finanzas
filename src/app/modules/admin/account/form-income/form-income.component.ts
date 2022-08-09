@@ -17,7 +17,6 @@ export class FormIncomeComponent implements OnInit {
     private _localStorage: LocalstorageService,
     private _fuseAlertService: FuseAlertService
   ) {
-    this._fuseAlertService.dismiss('alert');
   }
 
   incomeForm = new FormGroup({
@@ -40,10 +39,10 @@ export class FormIncomeComponent implements OnInit {
     { id: '4', name: 'Month' },
   ];
 
-  alert =  { 
+  alert = {
     title: '',
     message: '',
-    type: ''
+    type: 'primary'
   }
 
   ngOnInit(): void { }
@@ -56,34 +55,37 @@ export class FormIncomeComponent implements OnInit {
 
   submitForm() {
     console.log('Save Income');
-    try {
-      if (this.incomeForm.valid) {
-        this._accountService
-          .saveIncome({
-            title: this.incomeForm.value.title,
-            amount: this.incomeForm.value.amount,
-            gotIt: this.incomeForm.value.gotIt,
-            date: this.formatDate(this.incomeForm.value.date?._i),
-            account: Number(this._localStorage.account),
-          })
-          .subscribe((res) => {
+    if (this.incomeForm.valid) {
+      this._accountService
+        .saveIncome({
+          title: this.incomeForm.value.title,
+          amount: this.incomeForm.value.amount,
+          gotIt: this.incomeForm.value.gotIt,
+          date: this.incomeForm.value.date?._i,
+          account: Number(this._localStorage.account),
+        })
+        .subscribe(
+          res => {
             console.log(res);
             this.clearComponent();
             this.alert.message = 'The income has been saved successfully';
             this.alert.title = 'Successful operation';
             this.alert.type = 'primary'
-          });
-      }
-    } catch (error) {
-      this.alert.message = 'The income has been saved successfully';
-      this.alert.title = 'Successful operation';
-      this.alert.type = 'primary'
-    }
-    finally {
-      this.showAlert('alert');
-      setTimeout(() => {
-        this.dismissAlert('alert');
-      }, 3000);
+            this.showAlert('alertIncome');
+          },
+          err => {
+            console.log(err);
+            this.alert.message = err.message;
+            this.alert.title = 'Error operation';
+            this.alert.type = 'error'
+            this.showAlert('alertIncome');
+          },
+          () => {
+            setTimeout(() => {
+              this.dismissAlert('alertIncome');
+            }, 5000);
+          }
+        );
     }
   }
 
@@ -105,13 +107,6 @@ export class FormIncomeComponent implements OnInit {
     });
   }
 
-  formatDate(date: { date: number; month: number; year: number }) {
-    const m = date.month + 1;
-    const month = Number(m) <= 9 ? '0' + m : m;
-    const d = date.date + 1;
-    const day = Number(d) <= 9 ? '0' + d : d;
-    return date.year + '-' + month + '-' + day;
-  }
 
   get findEveryName() {
     return this.everyList.find(
@@ -136,7 +131,6 @@ export class FormIncomeComponent implements OnInit {
       ? 'I already have this income'
       : 'I do not have the income yet';
   }
-
 
   dismissAlert(name: string): void {
     this._fuseAlertService.dismiss(name);
