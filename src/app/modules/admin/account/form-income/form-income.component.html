@@ -26,8 +26,9 @@
               </span>
             </mat-form-field>
 
-            <mat-form-field [ngClass]="formFieldHelpers" class="fuse-mat-emphasized-affix fuse-mat-dense">
-              <input matInput [matDatepicker]="date" [placeholder]="'Date'" formControlName="date" (click)="date.open()" readonly style="cursor: pointer">
+            <mat-form-field class="fuse-mat-emphasized-affix fuse-mat-dense">
+              <input matInput [matDatepicker]="date" [placeholder]="'Date'" formControlName="date" (click)="date.open()"
+                readonly style="cursor: pointer">
               <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
               <mat-datepicker #date></mat-datepicker>
             </mat-form-field>
@@ -95,11 +96,23 @@
           </div>
         </div>
 
-        <div class="font-medium text-center text-secondary"></div>
-        <button (click)="submitForm()" class="w-full mt-8 lg:mt-auto" mat-flat-button="mat-flat-button" [color]="'primary'"
-          [disabled]="this.incomeForm.invalid">
+        <button (click)="submitForm()" class="w-full mt-8 lg:mt-auto" mat-flat-button="mat-flat-button"
+          [color]="'primary'" [disabled]="this.incomeForm.invalid">
           Save Income
         </button>
+
+        <div class="pt-8">
+          <!-- Success -->
+          <fuse-alert
+          [appearance]="'fill'"
+          [dismissible]="true"
+          [dismissed]="false"
+          [name]="'alert'"
+          [type]="this.alert.type">
+            <span fuseAlertTitle>{{this.alert.title}}</span>
+            {{this.alert.message}}
+          </fuse-alert>
+        </div>
       </div>
     </fuse-card>
   </div>
