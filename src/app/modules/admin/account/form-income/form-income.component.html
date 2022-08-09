@@ -20,7 +20,10 @@
             </mat-form-field>
 
             <mat-form-field class="fuse-mat-emphasized-affix fuse-mat-dense">
-              <input class="text-left" matInput="matInput" [placeholder]="'Amount'" formControlName="amount">
+              <input class="text-left" matInput="matInput" [placeholder]="'Amount'" formControlName="amount" 
+              type="number"
+              min="0"
+              oninput="value == '' ? value = 0 : value < 0 ? value = value * -1 : false">
               <span matSuffix="matSuffix">
                 <mat-icon svgIcon="heroicons_outline:currency-dollar"></mat-icon>
               </span>
@@ -101,13 +104,13 @@
           Save Income
         </button>
 
-        <div class="pt-8">
+        <div class="pt-4">
           <!-- Success -->
           <fuse-alert
           [appearance]="'fill'"
           [dismissible]="true"
           [dismissed]="false"
-          [name]="'alert'"
+          [name]="'alertIncome'"
           [type]="this.alert.type">
             <span fuseAlertTitle>{{this.alert.title}}</span>
             {{this.alert.message}}
