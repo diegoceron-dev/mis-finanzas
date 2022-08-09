@@ -20,6 +20,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { SharedModule } from 'app/shared/shared.module';
 import { FormIncomeComponent } from './form-income/form-income.component';
 import { FormExpenseComponent } from './form-expense/form-expense.component';
+import { FuseAlertModule } from '@fuse/components/alert';
 
 const accountRoutes: Route[] = [
     {
@@ -48,7 +49,8 @@ const accountRoutes: Route[] = [
         FuseCardModule,
         SharedModule,
         MatDatepickerModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        FuseAlertModule
     ],
 })
 export class AccountModule {}
